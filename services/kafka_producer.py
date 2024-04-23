@@ -2,7 +2,7 @@ from datetime import datetime
 import time
 import json
 import random
-from config.data_models.services.journal_event import changed_journal_record
+from services.journal_event import changed_journal_record
 from kafka import KafkaProducer
 
 def serializer(message):
