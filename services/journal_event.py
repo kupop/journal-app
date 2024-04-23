@@ -1,6 +1,10 @@
 from datetime import datetime
 
-#fake record
+# listen to csv
+
+# read csv
+
+# return record
 def changed_journal_record():
 
     now = datetime.now()
