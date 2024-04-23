@@ -1,0 +1,16 @@
+version: '2.24.6-desktop.1'
+
+services:
+  zookeper:
+      image: zookeeper@sha256:cacdaf98d6b0c622937168f879ae1ee5eeb4e3b3414da88c7b3dcdbe97fbc13b
+      container_name: journal-zookeeper
+      ports:
+        - "2181:2181"
+  kafka:
+      image: wurstmeister/kafka
+      container_name: journal-kafka
+      ports:
+        - "9092:9092"
+      environment:
+        KAFKA_ADVERTISED_HOST_NAME: localhost
+        KAFKA_ZOOKEEPER_CONNECT: journal-zookeeper:2181
