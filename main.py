@@ -1,4 +1,4 @@
-
+import time
 
 while True:
   # Check for new entries from the service
