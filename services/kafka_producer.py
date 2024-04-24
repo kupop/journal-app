@@ -13,15 +13,13 @@ producer = KafkaProducer(
     value_serializer=serializer
 )
 
-#går bara in i loopen om filen körs separat
 if __name__ == '__main__':
-    # make program run until killed
     while True:
         message = changed_journal_record()
 
         print (f'Producing message @ {datetime.now()} | Message = {str(message)}')
         producer.send('test', message)    
 
-        #spacing out messages to simulate spacing of events
-        time_to_sleep = random.randint(1, 11)
+        #spacing out messages to stand looking at them in a terminal
+        time_to_sleep = random.randint(1, 5)
         time.sleep(time_to_sleep)
