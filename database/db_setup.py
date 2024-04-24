@@ -52,26 +52,26 @@ def crate_fake_data():
 journal = [
 {
     "patientId" : "AA03713c-1f3c-4096-852a-29191ff6b188",
-    "documentType" : "GP journal entry",
+    "documentType" : "Kemlab",
     "version" : 1,
     "savedTimeStamp" : datetime.datetime.now()
 },
 {
     "patientId" : str(uuid.uuid4()),
-    "documentType" : "string",
-    "version" : 1,
+    "documentType" : "Multilab",
+    "version" : 3,
     "savedTimeStamp" : datetime.datetime.now()
 },
 {
     "patientId" : str(uuid.uuid4()),
-    "documentType" : "string",
-    "version" : 1,
+    "documentType" : "Blodlab",
+    "version" : 6,
     "savedTimeStamp" : datetime.datetime.now()
 },
     {
     "patientId" : str(uuid.uuid4()),
-    "documentType" : "string",
-    "version" : 1,
+    "documentType" : "Röntgen",
+    "version" : 2,
     "savedTimeStamp" : datetime.datetime.now()
 },
 ]
