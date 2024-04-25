@@ -18,11 +18,10 @@ def create_database():
     connection = sqlite3.connect("journal.db")
     cursor = connection.cursor()
 
-    cursor.execute("create table journal (patientId text, documentType text, version integer, savedTimeStamp timestamp)")
+    cursor.execute("create table journal (id integer primary key, patientId text, documentType text, version integer, savedTimeStamp timestamp)")
 
-    cursor.execute("create table patientIds (socialSecurityNumber integer, patientID text)")
+    cursor.execute("create table patientIds (id integer primary key, socialSecurityNumber integer, patientID text)")
     connection.close()
-
 
 def crate_fake_data():
 
