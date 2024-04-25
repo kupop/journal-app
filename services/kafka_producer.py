@@ -1,9 +1,9 @@
+from dataclasses import asdict
 from datetime import datetime
-import time
 import json
-import random
-from services.journal_event import changed_journal_record
+from services.csv_reader import read_csv
 from kafka import KafkaProducer
+from watchfiles import Change, watch
 
 def serializer(message):
     return json.dumps(message).encode('utf-8')
@@ -14,12 +14,11 @@ producer = KafkaProducer(
 )
 
 if __name__ == '__main__':
-    while True:
-        message = changed_journal_record()
 
-        print (f'Producing message @ {datetime.now()} | Message = {str(message)}')
-        producer.send('test', message)    
-
-        #spacing out messages to stand looking at them in a terminal
-        time_to_sleep = random.randint(1, 5)
-        time.sleep(time_to_sleep)
+    for changes in watch("./csv"):
+        for changetype, path in changes:
+            if changetype != Change.added:
+                continue
+            for message in read_csv(path):
+                print (f'Producing message @ {datetime.now()} | Message = {str(message)}')
+                producer.send('test', asdict(message))
