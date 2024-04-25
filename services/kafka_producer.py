@@ -15,7 +15,7 @@ producer = KafkaProducer(
 
 if __name__ == '__main__':
 
-    for changes in watch("./csv"):
+    for changes in watch("./incoming_journal_entries"):
         for changetype, path in changes:
             if changetype != Change.added:
                 continue
