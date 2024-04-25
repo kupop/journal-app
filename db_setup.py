@@ -3,50 +3,42 @@ import uuid
 import datetime
 
 journal = [
-{
-    "patientId" : "AA03713c-1f3c-4096-852a-29191ff6b188",
-    "documentType" : "Kemlab",
-    "version" : 1,
-    "savedTimeStamp" : datetime.datetime.now()
-},
-{
-    "patientId" : str(uuid.uuid4()),
-    "documentType" : "Multilab",
-    "version" : 3,
-    "savedTimeStamp" : datetime.datetime.now()
-},
-{
-    "patientId" : str(uuid.uuid4()),
-    "documentType" : "Blodlab",
-    "version" : 6,
-    "savedTimeStamp" : datetime.datetime.now()
-},
     {
-    "patientId" : str(uuid.uuid4()),
-    "documentType" : "Röntgen",
-    "version" : 2,
-    "savedTimeStamp" : datetime.datetime.now()
-},
+        "patientId": "AA03713c-1f3c-4096-852a-29191ff6b188",
+        "documentType": "Kemlab",
+        "version": 1,
+        "savedTimeStamp": datetime.datetime.now(),
+    },
+    {
+        "patientId": str(uuid.uuid4()),
+        "documentType": "Multilab",
+        "version": 3,
+        "savedTimeStamp": datetime.datetime.now(),
+    },
+    {
+        "patientId": str(uuid.uuid4()),
+        "documentType": "Blodlab",
+        "version": 6,
+        "savedTimeStamp": datetime.datetime.now(),
+    },
+    {
+        "patientId": str(uuid.uuid4()),
+        "documentType": "Röntgen",
+        "version": 2,
+        "savedTimeStamp": datetime.datetime.now(),
+    },
 ]
 
 patientIds = [
-  {
-    "socialSecurityNumber": 1234567890,  
-    "patientId": str(uuid.uuid4())
-  },
-  {
-    "socialSecurityNumber": 9876543210, 
-     "patientId": str(uuid.uuid4())
-  },
-  {
-    "socialSecurityNumber": 216543210, 
-     "patientId": str(uuid.uuid4())
-  },
+    {"socialSecurityNumber": 1234567890, "patientId": str(uuid.uuid4())},
+    {"socialSecurityNumber": 9876543210, "patientId": str(uuid.uuid4())},
+    {"socialSecurityNumber": 216543210, "patientId": str(uuid.uuid4())},
     {
-    "socialSecurityNumber": 8508120386, 
-     "patientId": "AA03713c-1f3c-4096-852a-29191ff6b199"
-  }
+        "socialSecurityNumber": 8508120386,
+        "patientId": "AA03713c-1f3c-4096-852a-29191ff6b199",
+    },
 ]
+
 
 def connect_and_execute(sql, params=()):
     connection = sqlite3.connect("journal.db")
@@ -103,6 +95,7 @@ def read_data(table):
     entries = cursor.fetchall()
     connection.close()
     return entries
+
 
 create_tables()
 
