@@ -6,7 +6,7 @@ import datetime
 def read_record():
     connection = sqlite3.connect("journal.db")
     cursor = connection.cursor()
-    cursor.execute("select * from patientIds")
+    cursor.execute("select * from journal")
     entries = cursor.fetchall()
     for row in entries:
         print(row)
@@ -95,6 +95,6 @@ patientIds = [
   }
 ]
 
-#create_database()
-#crate_fake_data()
+create_database()
+crate_fake_data()
 read_record()
