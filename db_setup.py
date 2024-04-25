@@ -2,52 +2,6 @@ import sqlite3
 import uuid
 import datetime
 
-
-def read_record():
-    connection = sqlite3.connect("journal.db")
-    cursor = connection.cursor()
-    cursor.execute("select * from journal")
-    entries = cursor.fetchall()
-    for row in entries:
-        print(row)
-    connection.close()
-
-
-def create_database():
-
-    connection = sqlite3.connect("journal.db")
-    cursor = connection.cursor()
-
-    cursor.execute("create table journal (id integer primary key, patientId text, documentType text, version integer, savedTimeStamp timestamp)")
-
-    cursor.execute("create table patientIds (id integer primary key, socialSecurityNumber integer, patientID text)")
-    connection.close()
-
-def crate_fake_data():
-
-    connection = sqlite3.connect("journal.db")
-    cursor = connection.cursor()
-
-    sql_insert = f"""
-    INSERT INTO patientIds (socialSecurityNumber, patientID)
-    VALUES (?, ?)
-    """
-
-    for entry in patientIds:
-        cursor.execute(sql_insert, (entry["socialSecurityNumber"], entry["patientId"]))
-
-    sql_insert2 = """
-    INSERT INTO journal (patientId, documentType, version, savedTimeStamp)
-    VALUES (?, ?, ?, ?)
-    """
-    
-    for entry in journal:
-        cursor.execute(sql_insert2, (entry["patientId"], entry["documentType"], entry["version"], entry["savedTimeStamp"]))
-
-    connection.commit()
-    connection.close()
-
-
 journal = [
 {
     "patientId" : "AA03713c-1f3c-4096-852a-29191ff6b188",
@@ -94,6 +48,66 @@ patientIds = [
   }
 ]
 
-create_database()
-crate_fake_data()
-read_record()
+def connect_and_execute(sql, params=()):
+    connection = sqlite3.connect("journal.db")
+    cursor = connection.cursor()
+    cursor.execute(sql, params)
+    connection.commit()
+    connection.close()
+
+
+def create_tables():
+    sql_create_journal = """
+    CREATE TABLE IF NOT EXISTS journal (
+        id INTEGER PRIMARY KEY,
+        patientId TEXT,
+        documentType TEXT,
+        version INTEGER,
+        savedTimeStamp TIMESTAMP
+    );
+    """
+
+    sql_create_patientIds = """
+    CREATE TABLE IF NOT EXISTS patientIds (
+        id INTEGER PRIMARY KEY,
+        socialSecurityNumber INTEGER,
+        patientId TEXT
+    );
+    """
+    connect_and_execute(sql_create_journal)
+    connect_and_execute(sql_create_patientIds)
+
+
+def create_fake_data(patientIds, journal):
+    for entry in patientIds:
+        insert_data("patientIds", entry)
+
+    for entry in journal:
+        insert_data("journal", entry)
+
+
+def insert_data(table, data):
+    sql_insert = f"""
+    INSERT INTO {table} ({', '.join(data.keys())})
+    VALUES ({', '.join(['?'] * len(data))})
+    """
+    params = [value for value in data.values()]
+    connect_and_execute(sql_insert, params)
+
+
+def read_data(table):
+    sql_select = f"SELECT * FROM {table}"
+    connection = sqlite3.connect("journal.db")
+    cursor = connection.cursor()
+    cursor.execute(sql_select)
+    entries = cursor.fetchall()
+    connection.close()
+    return entries
+
+create_tables()
+
+create_fake_data(patientIds=patientIds, journal=journal)
+
+entries = read_data("journal")
+for row in entries:
+    print(row)
