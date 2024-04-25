@@ -32,8 +32,8 @@ def write_record(persisted_journal):
     connection.commit()
     connection.close()
 
-def if_patientId_exists(incoming_journal):
-
+def persist_patient_record(incoming_journal):
+    
     socialSecurityNumber = incoming_journal["socialSecurityNumber"]
 
     connection = sqlite3.connect("journal.db")
@@ -46,11 +46,13 @@ def if_patientId_exists(incoming_journal):
     patient = PersistedJournal(None, incoming_journal["version"], incoming_journal["documentType"], incoming_journal["savedTimeStamp"])
 
     if result:
-        PersistedJournal["patientId"] = result[0]
+        patient.patientId = result[0]
         return write_record(patient)
     else:
-        PersistedJournal["patientId"] =  uuid.uuid4()
-        return write_patientId(incoming_journal["socialSecurityNumber"], PersistedJournal["patientId"])
+        patient.patientId =  uuid.uuid4()
+        write_patientId(incoming_journal["socialSecurityNumber"], patient.patientId)
+        write_record(patient)
+
 
 def read_record():
     connection = sqlite3.connect("journal.db")
@@ -59,3 +61,5 @@ def read_record():
     entries = cursor.fetchall()
     print(entries)
     connection.close()
+
+read_record()
