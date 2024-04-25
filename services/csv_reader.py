@@ -1,4 +1,3 @@
-from datetime import datetime
 import csv
 from models.incoming_journal import IncomingJournal
 
