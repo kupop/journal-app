@@ -23,8 +23,8 @@ kafka-python, watchfiles, docker
 https://github.com/users/kupop/projects/2
 
 ## 6. Currently out of scope/ possible future implementations
-Schema registration
-Tests
-Security in the form of data-access
-Error handling
-Logging
+Schema registration  
+Tests  
+Security in the form of data-access  
+Error handling  
+Logging  
