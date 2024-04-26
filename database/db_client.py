@@ -80,4 +80,4 @@ def read_record():
     connection.close()
 
 
-read_record()
+# read_record()
