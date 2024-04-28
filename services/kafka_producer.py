@@ -24,4 +24,4 @@ if __name__ == "__main__":
                 print(
                     f"Producing message @ {datetime.now()} | Message = {str(message)}"
                 )
-                producer.send("test", asdict(message))
+                producer.send("journal", asdict(message))

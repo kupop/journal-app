@@ -31,12 +31,10 @@ def write_record(persisted_journal):
     cursor.execute(
         sql_insert,
         (
-            PersistedJournal(
-                persisted_journal["patientId"],
-                persisted_journal["version"],
-                persisted_journal["documentType"],
-                persisted_journal["savedTimeStamp"],
-            )
+                persisted_journal.patientId,
+                persisted_journal.version,
+                persisted_journal.documentType,
+                persisted_journal.savedTimeStamp,
         ),
     )
 
@@ -45,7 +43,6 @@ def write_record(persisted_journal):
 
 
 def persist_patient_record(incoming_journal):
-
     socialSecurityNumber = incoming_journal["socialSecurityNumber"]
 
     connection = sqlite3.connect("journal.db")
@@ -66,7 +63,7 @@ def persist_patient_record(incoming_journal):
         patient.patientId = result[0]
         return write_record(patient)
     else:
-        patient.patientId = uuid.uuid4()
+        patient.patientId = str(uuid.uuid4())
         write_patientId(incoming_journal["socialSecurityNumber"], patient.patientId)
         write_record(patient)
 
@@ -74,10 +71,14 @@ def persist_patient_record(incoming_journal):
 def read_record():
     connection = sqlite3.connect("journal.db")
     cursor = connection.cursor()
-    cursor.execute("select * from journal")
+    cursor.execute('''
+    SELECT *
+    FROM journal
+    ''')
     entries = cursor.fetchall()
-    print(entries)
+    for row in entries:
+        print(row)
     connection.close()
 
 
-# read_record()
+read_record()
