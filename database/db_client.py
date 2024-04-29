@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 import uuid
 
@@ -24,6 +25,10 @@ def write_record(persisted_journal):
     connection = sqlite3.connect("journal.db")
     cursor = connection.cursor()
 
+    to_datetime_object = datetime.datetime.strptime(
+        persisted_journal.savedTimeStamp, "%Y%m%d%H%M%S"
+    )
+
     sql_insert = f"""
     INSERT INTO journal (patientId, documentType, version, savedTimeStamp)
     VALUES (?, ?, ?, ?)
@@ -31,10 +36,10 @@ def write_record(persisted_journal):
     cursor.execute(
         sql_insert,
         (
-                persisted_journal.patientId,
-                persisted_journal.version,
-                persisted_journal.documentType,
-                persisted_journal.savedTimeStamp,
+            persisted_journal.patientId,
+            persisted_journal.version,
+            persisted_journal.documentType,
+            to_datetime_object,
         ),
     )
 
@@ -71,10 +76,12 @@ def persist_patient_record(incoming_journal):
 def read_record():
     connection = sqlite3.connect("journal.db")
     cursor = connection.cursor()
-    cursor.execute('''
+    cursor.execute(
+        """
     SELECT *
     FROM journal
-    ''')
+    """
+    )
     entries = cursor.fetchall()
     for row in entries:
         print(row)
